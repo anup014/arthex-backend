@@ -1,15 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Arthex Backend",
+  "main": "server.js",
   "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@huggingface/inference": "^4.13.13",
     "axios": "^1.13.6",
