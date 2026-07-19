@@ -20,8 +20,29 @@ const Portfolio = require("./models/portfolio");
 const mongoose = require("mongoose");
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+.then(async () => {
+    console.log("✅ MongoDB Connected");
+
+    server.listen(5000, async () => {
+        console.log("🚀 Server Running");
+
+        const active = await Tournament.findOne({ isActive: true });
+
+        if (active) {
+            activeTournamentId = active._id;
+
+            tournamentInterval = setInterval(async () => {
+                await updateLeaderboard(activeTournamentId);
+            }, 5000);
+
+            console.log("🏆 Tournament resumed");
+        }
+    });
+
+})
+.catch(err => {
+    console.log(err);
+});
 
 const app = express();   // 👈 MUST COME BEFORE USING app
 
@@ -1402,24 +1423,5 @@ io.on("connection", (socket) => {
     console.log("Client disconnected");
   });
 });
-server.listen(5000, async () => {
-  console.log("🚀 Server running with WebSocket");
 
-  // 🔥 AUTO RESUME ACTIVE TOURNAMENT
-  const active = await Tournament.findOne({ isActive: true });
-
-  if (active) {
-    activeTournamentId = active._id;
-
-    if (tournamentInterval) {
-      clearInterval(tournamentInterval);
-    }
-
-    tournamentInterval = setInterval(async () => {
-      await updateLeaderboard(activeTournamentId);
-    }, 5000);
-
-    console.log("🏆 Resumed Tournament Engine");
-  }
-});
   
