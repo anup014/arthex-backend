@@ -23,21 +23,27 @@ mongoose.connect(process.env.MONGO_URI)
 .then(async () => {
     console.log("✅ MongoDB Connected");
 
-    server.listen(5000, async () => {
-        console.log("🚀 Server Running");
+    const PORT = process.env.PORT || 5000;
 
-        const active = await Tournament.findOne({ isActive: true });
+server.listen(PORT, async () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 
-        if (active) {
-            activeTournamentId = active._id;
+  const active = await Tournament.findOne({ isActive: true });
 
-            tournamentInterval = setInterval(async () => {
-                await updateLeaderboard(activeTournamentId);
-            }, 5000);
+  if (active) {
+    activeTournamentId = active._id;
 
-            console.log("🏆 Tournament resumed");
-        }
-    });
+    if (tournamentInterval) {
+      clearInterval(tournamentInterval);
+    }
+
+    tournamentInterval = setInterval(async () => {
+      await updateLeaderboard(activeTournamentId);
+    }, 5000);
+
+    console.log("🏆 Resumed Tournament Engine");
+  }
+});
 
 })
 .catch(err => {
