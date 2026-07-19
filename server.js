@@ -51,7 +51,9 @@ server.listen(PORT, async () => {
 });
 
 const app = express();   // 👈 MUST COME BEFORE USING app
-
+app.get("/", (req, res) => {
+  res.send("ARTHEX BACKEND IS WORKING");
+});
 app.use(cors());
 app.use(express.json());
 app.use("/stock", stockRoutes);
