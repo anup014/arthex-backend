@@ -15,8 +15,7 @@ const { Server } = require("socket.io");
 const WebSocket = require("ws");
 const rateLimit = require("express-rate-limit");
 const stockRoutes = require('./routes/stockRoutes');
-const aiRoutes = require("./routes/ai");
-app.use("/api/ai", aiRoutes);
+
 const Portfolio = require("./models/portfolio");
 const mongoose = require("mongoose");
 
@@ -50,7 +49,7 @@ server.listen(PORT, async () => {
 .catch(err => {
     console.log(err);
 });
-
+const aiRoutes = require("./routes/aiRoutes");
 const app = express();   // 👈 MUST COME BEFORE USING app
 app.get("/", (req, res) => {
   res.send("ARTHEX BACKEND IS WORKING");
@@ -58,8 +57,7 @@ app.get("/", (req, res) => {
 app.use(cors());
 app.use(express.json());
 app.use("/stock", stockRoutes);
-
-
+app.use("/api/ai", aiRoutes);
 
 app.use(rateLimit({
   windowMs: 60 * 1000,
