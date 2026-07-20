@@ -15,7 +15,8 @@ const { Server } = require("socket.io");
 const WebSocket = require("ws");
 const rateLimit = require("express-rate-limit");
 const stockRoutes = require('./routes/stockRoutes');
-
+const aiRoutes = require("./routes/ai");
+app.use("/api/ai", aiRoutes);
 const Portfolio = require("./models/portfolio");
 const mongoose = require("mongoose");
 
@@ -139,10 +140,12 @@ app.post("/auth/register", async (req, res) => {
 });
 
 app.post("/auth/login", async (req, res) => {
+  console.log("LOGIN REQUEST:", req.body);
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+    console.log("User Found:", user);
 
     if (!user) {
       return res.status(400).json({ error: "Invalid credentials" });
