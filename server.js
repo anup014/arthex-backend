@@ -1,6 +1,6 @@
 
 require("dotenv").config();
-
+console.log("Gemini Key Loaded:", process.env.GEMINI_API_KEY ? "YES" : "NO");
 console.log("Mongo URI:", process.env.MONGO_URI);
 
 const express = require("express");
