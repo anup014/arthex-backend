@@ -47,12 +47,18 @@ ${message}
   });
 
   } catch (err) {
-    console.log(err);
+  console.error("========== GEMINI ERROR ==========");
+  console.error(err);
+  console.error(err.message);
 
-    res.status(500).json({
-      reply: "AI temporarily unavailable."
-    });
+  if (err.errorDetails) {
+    console.error(err.errorDetails);
   }
+
+  res.status(500).json({
+    reply: err.message
+  });
+}
 });
 
 module.exports = router;
