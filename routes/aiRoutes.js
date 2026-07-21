@@ -6,6 +6,11 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 router.post("/chat", async (req, res) => {
+  console.log("==================================");
+console.log("NEW AI REQUEST RECEIVED");
+console.log("Time:", new Date().toISOString());
+console.log("Message:", req.body.message);
+console.log("==================================");
   try {
     const { message } = req.body;
 
